@@ -1,11 +1,15 @@
 import { useCallback, useLayoutEffect, useRef } from "react";
 
-export const findAntdModalRootNode = (dom: HTMLElement): HTMLElement => {
-  if (
-    !dom.classList.length &&
-    dom.children[0].classList[0] === "ant-modal-root"
-  ) {
-    return dom;
+export const findAntdModalRootNode = (dom: HTMLElement): HTMLElement | null => {
+  try {
+    if (
+      !dom.classList.length &&
+      dom.children[0].classList[0] === "ant-modal-root"
+    ) {
+      return dom;
+    }
+  } catch (error) {
+    return findAntdModalRootNode(dom.parentNode as HTMLElement);
   }
 
   return findAntdModalRootNode(dom.parentNode as HTMLElement);
@@ -20,7 +24,7 @@ export const useAntdModalIndex = (
   const setZIndex = useCallback((zIndex: number | string) => {
     if (divRef.current) {
       const dom = findAntdModalRootNode(divRef.current);
-      dom.style.zIndex = String(zIndex);
+      if (dom) dom.style.zIndex = String(zIndex);
     }
   }, []);
 
