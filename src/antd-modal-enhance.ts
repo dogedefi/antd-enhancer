@@ -24,7 +24,10 @@ export const useAntdModalIndex = (
   const setZIndex = useCallback((zIndex: number | string) => {
     if (divRef.current) {
       const dom = findAntdModalRootNode(divRef.current);
-      if (dom) dom.style.zIndex = String(zIndex);
+      if (dom) {
+        dom.style.zIndex = String(zIndex);
+        dom.style.position = "relative";
+      }
     }
   }, []);
 
